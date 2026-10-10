@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>M.O.N CONSULT – Certificate Verification</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--ink:#14213d;--mute:#5b6783;--blue:#1b3a8a;--gold:#d9a21b;--ok:#157347;--okbg:#e6f5ec;--bad:#b42318;--badbg:#fdecea;--line:#dfe5f1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1424;--card:#171f35;--ink:#eef2fb;--mute:#9aa6c4;--blue:#8fb0ff;--ok:#5fd18b;--okbg:#12301f;--bad:#ff8b80;--badbg:#3a1714;--line:#2a3452}}
+:root[data-theme="dark"]{--bg:#0e1424;--card:#171f35;--ink:#eef2fb;--mute:#9aa6c4;--blue:#8fb0ff;--ok:#5fd18b;--okbg:#12301f;--bad:#ff8b80;--badbg:#3a1714;--line:#2a3452}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;min-height:100vh;display:flex;justify-content:center;padding:20px 14px}
+.card{width:100%;max-width:560px;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--gold);border-radius:14px;padding:26px 22px;align-self:flex-start}
+h1{margin:0;text-align:center;color:var(--blue);font-size:26px;letter-spacing:.5px}
+.sub{text-align:center;color:var(--mute);font-style:italic;margin:4px 0 20px}
+.badge{border-radius:12px;padding:16px;text-align:center;font-weight:bold;font-size:18px;font-family:system-ui,sans-serif}
+.ok{background:var(--okbg);color:var(--ok)}.bad{background:var(--badbg);color:var(--bad)}
+dl{margin:18px 0 0}dt{font:12px system-ui,sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--mute);margin-top:14px}
+dd{margin:3px 0 0;font-size:18px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.name{font-size:24px;color:var(--blue);font-weight:bold}
+form{display:flex;gap:8px;margin-top:22px}
+input{flex:1;min-width:0;padding:11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:16px}
+button{padding:11px 16px;border:0;border-radius:8px;background:var(--blue);color:#fff;font-size:16px;cursor:pointer}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button{color:#0e1424}}
+.foot{margin-top:20px;text-align:center;font:12px system-ui,sans-serif;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>M.O.N CONSULT</h1>
+  <p class="sub">Certificate Verification</p>
+  <div id="out"></div>
+  <form id="f"><input id="q" placeholder="Enter certificate no. e.g. MON-2026-001" autocomplete="off"><button>Verify</button></form>
+  <p class="foot">Only certificates issued by M.O.N CONSULT appear here.</p>
+</div>
+<script>
+const COURSE="Computer Skills, Career Development and Monitoring & Evaluation";
+const ISSUED="10th October, 2026";
+const REG={
+"MON-2026-001":"Violet Kuyokwa","MON-2026-002":"Stanley Kaposa","MON-2026-003":"Bianca Khulula","MON-2026-004":"Ernest Mwakyula",
+"MON-2026-005":"Maligelita Chimera","MON-2026-006":"Evelyn Chirwa","MON-2026-007":"Paul Chapiti","MON-2026-008":"Bettie Phiri",
+"MON-2026-009":"Elias Dinala","MON-2026-010":"Faith Balala","MON-2026-011":"Grey Martial Kamija","MON-2026-012":"Jahn Gilson",
+"MON-2026-013":"Mathews Sululu","MON-2026-014":"Peter Foloko Phiri","MON-2026-015":"Tapiwa Chima","MON-2026-016":"Thiago Botha"};
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function show(raw){
+  const id=(raw||"").trim().toUpperCase(), out=document.getElementById("out");
+  if(!id){out.innerHTML="";return}
+  const n=REG[id];
+  out.innerHTML=n?`<div class="badge ok">✔ Valid certificate</div><dl>
+  <dt>Awarded to</dt><dd class="name">${esc(n)}</dd>
+  <dt>Certificate No.</dt><dd>${esc(id)}</dd>
+  <dt>Training completed</dt><dd>${COURSE}</dd>
+  <dt>Date issued</dt><dd>${ISSUED}</dd>
+  <dt>Issued by</dt><dd>M.O.N CONSULT</dd></dl>`
+  :`<div class="badge bad">✖ Certificate not found<br><small>No record matches “${esc(id)}”.</small></div>`;
+}
+function fromUrl(){
+  const p=new URLSearchParams(location.search).get("c")||location.hash.replace(/^#\/?(c=)?/,"");
+  return p;
+}
+document.getElementById("f").addEventListener("submit",e=>{e.preventDefault();show(document.getElementById("q").value)});
+const init=fromUrl(); if(init){document.getElementById("q").value=init;show(init)}
+</script>
+</body>
+</html>
